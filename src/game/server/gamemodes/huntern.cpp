@@ -88,7 +88,7 @@ void CGameControllerHunterN::ResetPlayerClass(CCharacter *pChr)
 	pChr->RemoveWeapons(); // Remove All Weapons!
 }
 
-void CGameControllerHunterN::SendChatRoom(const char *pText, int Flags = 3)
+void CGameControllerHunterN::SendChatRoom(const char *pText, int Flags)
 {
 	for(int i = 0; i < MAX_CLIENTS; ++i)
 		if(GetPlayerIfInRoom(i))

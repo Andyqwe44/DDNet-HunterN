@@ -2,8 +2,6 @@
 #include <game/generated/server_data.h>
 #include <game/server/entities/projectile.h>
 
-#include <game/server/weapons/shotgun.h>
-
 CGrenade::CGrenade(CCharacter *pOwnerChar) :
 	CWeapon(pOwnerChar)
 {
@@ -12,6 +10,20 @@ CGrenade::CGrenade(CCharacter *pOwnerChar) :
 	m_FireDelay = g_pData->m_Weapons.m_aId[WEAPON_GRENADE].m_Firedelay;
 	m_FullAuto = true;
 }
+/* Hunter Start */
+bool CGrenade::FragCollide(CProjectile *pProj, vec2 Pos, CCharacter *pHit, bool EndOfLife)
+{
+	if(pHit)
+	{
+		if(pHit->GetPlayer()->GetCID() == pProj->GetOwner())
+			return false;
+
+		pHit->TakeDamage(vec2(0, 0), g_pData->m_Weapons.m_Shotgun.m_pBase->m_Damage, pProj->GetOwner(), WEAPON_SHOTGUN, pProj->GetWeaponID(), false);
+	}
+
+	return true;
+}
+/* Hunter End */
 
 bool CGrenade::GrenadeCollide(CProjectile *pProj, vec2 Pos, CCharacter *pHit, bool EndOfLife)
 {
@@ -45,7 +57,7 @@ bool CGrenade::GrenadeCollide(CProjectile *pProj, vec2 Pos, CCharacter *pHit, bo
 				d * 0.4f, //Dir
 				6.0f, // Radius
 				0.33f * pProj->Server()->TickSpeed(), //Span
-				CShotgun::BulletCollide);
+				FragCollide);
 			
 			// pack the Projectile and send it to the client Directly
 			CNetObj_Projectile p;

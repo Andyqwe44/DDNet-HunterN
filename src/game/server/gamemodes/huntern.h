@@ -21,6 +21,8 @@ public:
 	static void OnClassSpawn(CCharacter *pChr);
 	static void ResetPlayerClass(CCharacter *pChr);
 
+	void SendChatRoom(const char *pText, int Flags = 3);
+
 	// event
 	virtual void OnCharacterSpawn(class CCharacter *pChr) override;
 	virtual void OnWorldReset() override;
